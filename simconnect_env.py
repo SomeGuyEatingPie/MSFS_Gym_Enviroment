@@ -60,9 +60,9 @@ class MSFS():
         Transmits the chosen action to MSFS
         controlInput: Array [Aileron, Elevator, Rudder]
         """
-        self.sc.set_simdatum("Aileron Position", controlInput[0]*16000)
-        self.sc.set_simdatum("Elevator Position", controlInput[1]*16000)
-        self.sc.set_simdatum("Rudder Pedal Position", controlInput[2]*16000)
+        self.sc.set_simdatum("Aileron Position", controlInput[0])
+        self.sc.set_simdatum("Elevator Position", controlInput[1])
+        self.sc.set_simdatum("Rudder Pedal Position", controlInput[2])
 
     
     def reset_env(self, seed=None, options=None):
@@ -73,24 +73,41 @@ class MSFS():
         self.sc.set_simdatum("Plane Heading Degrees True", head)
         self.sc.set_simdatum("Plane Bank Degrees", 0)
         self.sc.set_simdatum("Plane Pitch Degrees", 0)
-        self.sc.set_simdatum("Airspeed True", 75)
-        self.sc.set_simdatum("Plane Alt Above Ground", 1500)
+        self.sc.set_simdatum("Airspeed True", 75, units = "knots")
+        self.sc.set_simdatum("Plane Alt Above Ground", 1500, units= "feet")
+        self.sc.set_simdatum("Aileron Position", 0)
+        self.sc.set_simdatum("Elevator Position", 0)
+        self.sc.set_simdatum("Rudder Pedal Position", 0)
 
     
     def reward(self, observation):
         
         #1500ft starting alt
-        alt = observation[4][0]
-        altRew = 1.5* math.sqrt(alt-140)-50
+        alt = observation[6][0]
+        if alt > 150:
+            altDiscount = (0.9(math.e**(-0.9/(0.005*(alt-150))))) + 0.1
+        else:
+            altDiscount = 0.1
         #75kts starting airspeed
             #50kts Stall speed
         speed = observation[4][0]
+        if speed > 50:
+            speedDiscount = (0.9(math.e**(-0.9/(0.2*(speed-50))))) + 0.1
+        else:
+            speedDiscount = 0.1
+
+        turnCoord = observation[3][0]
+        turnCoordDiscount = (0.9/(math.e**(turnCoord**2))) + 0.1
+
 
         vario = observation[5]
-        speedRew = 2*math.log(speed - 50) -2.795
+        
+        if vario >= 0:
+            reward = speedDiscount*altDiscount*turnCoordDiscount*vario
+        else:
+            reward = vario * (0.005*(speedDiscount*altDiscount*turnCoordDiscount)**(-1.5*math.e))
 
-        reward = speedRew*altRew*vario
-
+        print(f"Rew: {reward}")
         return reward
     
     def end_episode(self, observation):

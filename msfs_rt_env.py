@@ -1,12 +1,13 @@
 import gymnasium as gym
 from gymnasium import spaces
 from simconnect_env import MSFS
-import ray
-from ray.rllib.algorithms.sac import SAC
-from ray.tune.logger import pretty_print
-from ray.rllib.utils import check_env
+import ray 
+from ray.rllib.algorithms.algorithm import Algorithm
+from ray.rllib.algorithms.sac import SACConfig
 import numpy as np
 from rtgym import RealTimeGymInterface, DEFAULT_CONFIG_DICT
+
+import pathlib
 
 import logging
 logging.getLogger("root").setLevel(40)
@@ -33,7 +34,7 @@ class MyRealTimeInterface(RealTimeGymInterface):
 
     def get_action_space(self) -> spaces.Box:
 
-        return  spaces.Box(low= -1.0, high= 1.0, shape=(3, ), dtype=float)
+        return  spaces.Box(low= -16000, high= 16000, shape=(3, ), dtype=float)
 
     def get_default_action(self):
 
@@ -69,9 +70,9 @@ class MyRealTimeInterface(RealTimeGymInterface):
 
 MSFS_config = DEFAULT_CONFIG_DICT
 MSFS_config["interface"] = MyRealTimeInterface
-MSFS_config["time_step_duration"] = 0.2
+MSFS_config["time_step_duration"] = 1
 MSFS_config["start_obs_capture"] = 1
-MSFS_config["time_step_timeout_factor"] = 4.0
+MSFS_config["time_step_timeout_factor"] = 1.2
 MSFS_config["ep_max_length"] = np.inf
 MSFS_config["act_buf_len"] = 4
 MSFS_config["reset_act_buf"] = False
@@ -79,20 +80,33 @@ MSFS_config["benchmark"] = True
 MSFS_config["benchmark_polyak"] = 0.2
 MSFS_config["disable_env_checking"] = True
 
-terminated = False
-env_interface = gym.make("real-time-gym-ts-v1", config = MSFS_config, )
 
-ray.init(
-    num_gpus= 1,
-    include_dashboard=False,
-    ignore_reinit_error=True,
-    log_to_driver=False,
-)
+path = pathlib.Path(__file__).parent.resolve()
+path_to_checkpoint = f"{path}\policies\MSFS_checkpoint"
+env_name = "real-time-gym-ts-v1"
 
-algorithm = (
-    SAC(env= "real-time-gym-ts-v1", config= MSFS_config,)
-    )
+try:
+    algo = Algorithm.from_checkpoint(path_to_checkpoint)
+    print("Algorithm restored from checpoint")
+except:
+    env = gym.make(env_name, config = MSFS_config)
+    algo_config = SACConfig().resources(num_gpus=1).environment(env= env_name)
+    algo = algo_config.build()
 
-while not terminated:
-    algorithm.train()
+episode_reward = 0
+terminated = truncated = False
+
+while not terminated and not truncated:
+    try:
+        algo.train()
+    finally:
+        save_result = algo.save(path_to_checkpoint)
+        path_to_checkpoint = save_result.checkpoint.path
+        print(
+            "An Algorithm checkpoint has been created inside directory: "
+            f"'{path_to_checkpoint}'."
+        )
+
+algo.stop()
+
 
