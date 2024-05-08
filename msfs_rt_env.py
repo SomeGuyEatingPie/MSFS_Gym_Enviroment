@@ -1,6 +1,7 @@
 import gymnasium as gym
 from gymnasium import spaces
 from simconnect_env import MSFS
+from stable_baselines3.common.env_checker import check_env
 import ray 
 from ray.rllib.algorithms.algorithm import Algorithm
 from ray.rllib.algorithms.sac import SACConfig
@@ -34,7 +35,7 @@ class MyRealTimeInterface(RealTimeGymInterface):
 
     def get_action_space(self) -> spaces.Box:
 
-        return  spaces.Box(low= -16000, high= 16000, shape=(3, ), dtype=float)
+        return  spaces.Box(low= -1.0000, high= 1.0000, shape=(3, ), dtype= np.float32)
 
     def get_default_action(self):
 

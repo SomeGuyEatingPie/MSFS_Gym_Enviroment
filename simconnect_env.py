@@ -60,9 +60,9 @@ class MSFS():
         Transmits the chosen action to MSFS
         controlInput: Array [Aileron, Elevator, Rudder]
         """
-        self.sc.set_simdatum("Aileron Position", controlInput[0])
-        self.sc.set_simdatum("Elevator Position", controlInput[1])
-        self.sc.set_simdatum("Rudder Pedal Position", controlInput[2])
+        self.sc.set_simdatum("Aileron Position", controlInput[0]*16000)
+        self.sc.set_simdatum("Elevator Position", controlInput[1]*16000)
+        self.sc.set_simdatum("Rudder Pedal Position", controlInput[2]*16000)
 
     
     def reset_env(self, seed=None, options=None):
