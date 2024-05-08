@@ -1,7 +1,6 @@
 import gymnasium as gym
 from gymnasium import spaces
 from simconnect_env import MSFS
-from stable_baselines3.common.env_checker import check_env
 import ray 
 from ray.rllib.algorithms.algorithm import Algorithm
 from ray.rllib.algorithms.sac import SACConfig
@@ -21,25 +20,25 @@ class MyRealTimeInterface(RealTimeGymInterface):
 
     def get_observation_space(self) -> spaces.Tuple:
 
-        heading = spaces.Box(low=-360.0, high=360.0, shape=(1,))
-        bank = spaces.Box(low=-360.0, high=360.0, shape=(1,))
-        pitch = spaces.Box(low=-360.0, high=360.0, shape=(1,))
-        turnCoord= spaces.Box(low=-127.0, high=127, shape=(1,))
-        airspeed = spaces.Box(low=-10.0, high=np.inf, shape=(1,))
-        vario = spaces.Box(low=-np.inf, high=200.0, shape=(1,))
-        trueAlt = spaces.Box(low=0.0, high=13000.0, shape=(1,))
-        alt = spaces.Box(low=0.0, high=13000.0, shape=(1,))
-        pos = spaces.Box(low=-180.0, high=180.0, shape=(2,))
+        heading = spaces.Box(low=-360.0, high=360.0, shape=(1,), dtype= np.float64)
+        bank = spaces.Box(low=-360.0, high=360.0, shape=(1,), dtype= np.float64)
+        pitch = spaces.Box(low=-360.0, high=360.0, shape=(1,), dtype= np.float64)
+        turnCoord= spaces.Box(low=-127.0, high=127, shape=(1,), dtype= np.int64)
+        airspeed = spaces.Box(low=-10.0, high=np.inf, shape=(1,), dtype= np.float64)
+        vario = spaces.Box(low=-np.inf, high=200.0, shape=(1,), dtype= np.float64)
+        trueAlt = spaces.Box(low=0.0, high=13000.0, shape=(1,), dtype= np.float64)
+        alt = spaces.Box(low=0.0, high=13000.0, shape=(1,), dtype= np.float64)
+        pos = spaces.Box(low=-180.0, high=180.0, shape=(2,), dtype= np.float64)
 
         return spaces.Tuple((heading, bank, pitch, turnCoord, airspeed, vario, trueAlt, alt, pos))
 
     def get_action_space(self) -> spaces.Box:
 
-        return  spaces.Box(low= -1.0000, high= 1.0000, shape=(3, ), dtype= np.float32)
+        return  spaces.Box(low= -1.0000, high= 1.0000, shape=(3, ), dtype= np.float64)
 
     def get_default_action(self):
 
-        return np.array([0, 0, 0], dtype='int')
+        return np.array([0, 0, 0], dtype= np.float64)
 
     def send_control(self, control):
 
@@ -79,12 +78,16 @@ MSFS_config["act_buf_len"] = 4
 MSFS_config["reset_act_buf"] = False
 MSFS_config["benchmark"] = True
 MSFS_config["benchmark_polyak"] = 0.2
-MSFS_config["disable_env_checking"] = True
+MSFS_config["disable_env_checking"] = False
 
 
 path = pathlib.Path(__file__).parent.resolve()
 path_to_checkpoint = f"{path}\checkpoints"
 env_name = "real-time-gym-ts-v1"
+
+# env = gym.make(env_name, config = MSFS_config)
+# algo_config = SACConfig().resources(num_gpus=1).environment(env= env_name, disable_env_checking=False)
+# algo = algo_config.build()
 
 try:
     file = open("checkpoint_dir.txt", "r")
@@ -95,7 +98,7 @@ try:
 except:
     print("Training new policy")
     env = gym.make(env_name, config = MSFS_config)
-    algo_config = SACConfig().resources(num_gpus=1).environment(env= env_name, disable_env_checking=True)
+    algo_config = SACConfig().resources(num_gpus=1).environment(env= env_name, disable_env_checking=False)
     algo = algo_config.build()
 
 episode_reward = 0

@@ -41,15 +41,15 @@ class MSFS():
         
         sv = self.sc.get_simdata(self.simsimvars)
 
-        heading = np.array([sv["Plane Heading Degrees True"]], dtype=float)
-        bank = np.array([sv["Plane Bank Degrees"]], dtype=float)
-        pitch = np.array([sv["Plane Pitch Degrees"]], dtype=float)
-        turnCoord = np.array([sv["Turn Coordinator Ball"]], dtype=int)
-        airspeed = np.array([sv["Airspeed Indicated"]], dtype=float)
-        vario = np.array([sv["Variometer Rate"]], dtype=float)
-        trueAlt = np.array([sv["Plane Alt Above Ground"]], dtype=float)
-        alt = np.array([sv["Indicated Altitude"]], dtype=float)
-        pos = np.array([sv["Plane Latitude"],sv["Plane Longitude"]], dtype=float)
+        heading = np.array([sv["Plane Heading Degrees True"]], dtype= np.float64)
+        bank = np.array([sv["Plane Bank Degrees"]], dtype= np.float64)
+        pitch = np.array([sv["Plane Pitch Degrees"]], dtype= np.float64)
+        turnCoord = np.array([sv["Turn Coordinator Ball"]], dtype= np.int64)
+        airspeed = np.array([sv["Airspeed Indicated"]], dtype= np.float64)
+        vario = np.array([sv["Variometer Rate"]], dtype= np.float64)
+        trueAlt = np.array([sv["Plane Alt Above Ground"]], dtype= np.float64)
+        alt = np.array([sv["Indicated Altitude"]], dtype= np.float64)
+        pos = np.array([sv["Plane Latitude"],sv["Plane Longitude"]], dtype= np.float64)
 
 
         return [heading, bank, pitch, turnCoord, airspeed, vario, trueAlt, alt, pos]
@@ -100,7 +100,7 @@ class MSFS():
         turnCoordDiscount = (0.9/(math.e**(turnCoord**2))) + 0.1
 
 
-        vario = observation[5]
+        vario = observation[5][0]
         
         if vario >= 0:
             reward = speedDiscount*altDiscount*turnCoordDiscount*vario
@@ -112,7 +112,11 @@ class MSFS():
     
     def end_episode(self, observation):
 
-        return observation[6] < 150
+        terminated = False
+        if observation[6] < 150:
+            terminated = True
+
+        return terminated
     
 def test_simconnect():
 
