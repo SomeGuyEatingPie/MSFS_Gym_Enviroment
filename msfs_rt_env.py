@@ -25,7 +25,7 @@ class MyRealTimeInterface(RealTimeGymInterface):
         pitch = spaces.Box(low=-360.0, high=360.0, shape=(1,))
         turnCoord= spaces.Box(low=-127.0, high=127, shape=(1,))
         airspeed = spaces.Box(low=-10.0, high=np.inf, shape=(1,))
-        vario = spaces.Box(low=-np.inf, high=100.0, shape=(1,))
+        vario = spaces.Box(low=-np.inf, high=200.0, shape=(1,))
         trueAlt = spaces.Box(low=0.0, high=13000.0, shape=(1,))
         alt = spaces.Box(low=0.0, high=13000.0, shape=(1,))
         pos = spaces.Box(low=-180.0, high=180.0, shape=(2,))
@@ -82,15 +82,19 @@ MSFS_config["disable_env_checking"] = True
 
 
 path = pathlib.Path(__file__).parent.resolve()
-path_to_checkpoint = f"{path}\policies\MSFS_checkpoint"
+path_to_checkpoint = f"{path}\checkpoints"
 env_name = "real-time-gym-ts-v1"
 
 try:
-    algo = Algorithm.from_checkpoint(path_to_checkpoint)
+    file = open("checkpoint_dir.txt", "r")
+    path = file.readline()
+    file.close()
+    algo = Algorithm.from_checkpoint(path)
     print("Algorithm restored from checpoint")
 except:
+    print("Training new policy")
     env = gym.make(env_name, config = MSFS_config)
-    algo_config = SACConfig().resources(num_gpus=1).environment(env= env_name)
+    algo_config = SACConfig().resources(num_gpus=1).environment(env= env_name, disable_env_checking=True)
     algo = algo_config.build()
 
 episode_reward = 0
@@ -100,12 +104,14 @@ while not terminated and not truncated:
     try:
         algo.train()
     finally:
-        save_result = algo.save(path_to_checkpoint)
-        path_to_checkpoint = save_result.checkpoint.path
+        save_dir = algo.save(path_to_checkpoint)
         print(
             "An Algorithm checkpoint has been created inside directory: "
-            f"'{path_to_checkpoint}'."
+            f"'{save_dir}'."
         )
+        file = open("checkpoint_dir.txt", "w")
+        file.writelines(save_dir)
+        file.close
 
 algo.stop()
 

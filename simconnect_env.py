@@ -85,14 +85,14 @@ class MSFS():
         #1500ft starting alt
         alt = observation[6][0]
         if alt > 150:
-            altDiscount = (0.9(math.e**(-0.9/(0.005*(alt-150))))) + 0.1
+            altDiscount = (0.9*(math.e**(-0.9/(0.005*(alt-150))))) + 0.1
         else:
             altDiscount = 0.1
         #75kts starting airspeed
             #50kts Stall speed
         speed = observation[4][0]
         if speed > 50:
-            speedDiscount = (0.9(math.e**(-0.9/(0.2*(speed-50))))) + 0.1
+            speedDiscount = (0.9*(math.e**(-0.9/(0.2*(speed-50))))) + 0.1
         else:
             speedDiscount = 0.1
 
