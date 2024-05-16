@@ -2,6 +2,7 @@ from gymnasium import spaces
 from default_env import DefaultEnv
 import numpy as np
 
+from msfs_rt_env import RealTimeFlightSimInterface
 
 class GliderEnv(DefaultEnv):
 
@@ -113,7 +114,7 @@ class GliderEnv(DefaultEnv):
         #print(f"alt: {altDiscount}")
         
         reward =  altDiscount*( varioRew + turnCoordReward)
-        print(f"Reward: {reward}")
+        print(f"Reward: {reward}    | Turn{turnCoordReward} Vario:{varioRew} Alt:{altDiscount}")
         return reward
     
 
@@ -127,20 +128,8 @@ class GliderEnv(DefaultEnv):
 
         return terminated
     
+class GliderInterface(RealTimeFlightSimInterface):
 
+    def __init__(self):
+        super().__init__(GliderEnv())
 
-def test_simconnect():
-
-    env = GliderEnv()
-    env.reset_env()
-    observation = env.observation()
-    print("--------Observation---------")
-    print(observation)
-    reward = env.reward(observation)
-    print("--------Reward--------")
-    print(reward)
-    env.terminate(observation)
-    control = (0.5, 0.5,0.5)
-    env.control(control)
-
-#test_simconnect()
