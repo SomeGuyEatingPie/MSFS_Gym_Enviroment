@@ -4,6 +4,7 @@ Create custom [real-time](https://github.com/yannbouteiller/rtgym/tree/main) - [
 Tutorial and installation guide soon.  
 
 ## Dependencies  
+[Gymnasium](https://gymnasium.farama.org/index.html)  
 [rtgym](https://github.com/yannbouteiller/rtgym/tree/main) – MSFS_Gym_Env is built on top of rtgym.  
 [pysimconnect](https://github.com/patricksurry/pysimconnect) - Python wrapper for the SimConnect API.  
   
