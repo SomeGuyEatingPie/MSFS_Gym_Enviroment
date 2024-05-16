@@ -19,4 +19,5 @@ Please submit a pull request and add yourself to the Contributors list.
   
 ### Acknowledgements  
 Yann Bouteiller - rtgym  
-Patrick Surry - pysimconnect
+Patrick Surry - pysimconnect  
+Nonso Nnamoko (Edge Hill University) - Project Supervisor  
