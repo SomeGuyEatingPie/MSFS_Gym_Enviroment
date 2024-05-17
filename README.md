@@ -3,11 +3,14 @@ Create custom [real-time](https://github.com/yannbouteiller/rtgym/tree/main) - [
   
 Tutorial and installation guide soon.  
 
-## Dependencies  
-[Gymnasium](https://gymnasium.farama.org/index.html)  
-[rtgym](https://github.com/yannbouteiller/rtgym/tree/main) – MSFS_Gym_Env is built on top of rtgym.  
-[pysimconnect](https://github.com/patricksurry/pysimconnect) - Python wrapper for the SimConnect API.  
-  
+## Requirements 
+[Gymnasium 0.28.1](https://gymnasium.farama.org/index.html)  
+[rtgym 0.13](https://github.com/yannbouteiller/rtgym/tree/main) – MSFS_Gym_Env is built on top of rtgym.  
+[pysimconnect 0.2.6](https://github.com/patricksurry/pysimconnect) - Python wrapper for the SimConnect API.  
+
+###Optional
+[ray 2.4.0](https://www.ray.io/) - rllib used by the glider enviroment demo (msfs_soar_training.py)
+
 ## Authors  
 Contributions welcome.  
 Please submit a pull request and add yourself to the Contributors list.  
