@@ -12,7 +12,7 @@ It is coded in python.
 ### Optional
 [ray 2.4.0](https://www.ray.io/) - rllib used by the glider enviroment demo (msfs_soar_training.py)
 
-
+## Installation
 to install all requirements use:  
 ```bash
 pip install -r requirements.txt
