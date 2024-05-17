@@ -84,17 +84,3 @@ Please submit a pull request and add yourself to the Contributors list.
 Yann Bouteiller - rtgym  
 Patrick Surry - pysimconnect  
 Dr Nonso Nnamoko (Edge Hill University) - Project Supervisor  
-
-### Citing this Framework  
-If anyone ever needs to cite this in a pubication please use:
-
-```bibtex
-@masterthesis{MSFS-soar,
-  type = {Bachelor's Dissertation}
-  author = {Sean Johnson}
-  title = {‘MSFS Soar’ – Deep RL Glider Pilot Using Microsoft Flight Simulator 2020}
-  school = {Edge Hill University}
-  year = {2024}
-}
-```
-A copy can be provided on request
