@@ -46,7 +46,7 @@ class CustomEnv(DefaultEnv):
 
 ```
 Write your own environment code in this class, a working example of this can be seen in [premade_env.py](https://github.com/SomeGuyEatingPie/MSFS_Gym_Enviroment/blob/master/premade_env.py).  
-rtgym requires that the observation space be returned as a Spaces.Tupple.
+rtgym requires that the observation space be returned as a Spaces.Tuple.
 
 Then copy an interface class for your custom environment, which inherits from [RealTimeFlightSimInterface](https://github.com/SomeGuyEatingPie/MSFS_Gym_Enviroment/blob/master/msfs_rt_env.py). 
 ```python
