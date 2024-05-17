@@ -6,8 +6,10 @@ from msfs_rt_env import RealTimeFlightSimInterface
 
 
 class GliderEnv(DefaultEnv):
+    """MSFS Soar"""
 
     def __init__(self):
+        """Define the custom observation space, action space, simvars and starting positon+ heading"""
 
         super().__init__()
 
@@ -98,7 +100,6 @@ class GliderEnv(DefaultEnv):
         turnCoordReward = 0.5 * (1 - abs(turnCoord / 75))
         if turnCoordReward <= 0.1:
             turnCoordReward = 0.1
-        # print(f"Turn Coordinator: {turnCoordReward}")
 
         vario = observation[5][0]
         if vario > 0:
@@ -106,11 +107,8 @@ class GliderEnv(DefaultEnv):
         else:
             varioRew = 0
 
-        # print(f"vario: {varioRew}")
-
         alt = observation[6][0]
         altDiscount = alt / 1500
-        # print(f"alt: {altDiscount}")
 
         reward = altDiscount * (varioRew + turnCoordReward)
         print(
@@ -130,6 +128,7 @@ class GliderEnv(DefaultEnv):
 
 
 class GliderInterface(RealTimeFlightSimInterface):
+    """Custom interface for the GLiderEnv MSFS environment"""
 
     def __init__(self):
         super().__init__(GliderEnv())

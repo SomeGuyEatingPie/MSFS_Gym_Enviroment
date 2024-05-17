@@ -15,6 +15,11 @@ logging.getLogger("root").setLevel(40)
 
 
 def trainer(interface: DefaultEnv):
+    """Demo an environment
+
+    Args:
+        interface: The custom MSFS environment to test/demo
+    """
     MSFS_config = DEFAULT_CONFIG_DICT
     MSFS_config["interface"] = interface
     MSFS_config["time_step_duration"] = 0.2
@@ -65,4 +70,4 @@ def trainer(interface: DefaultEnv):
     algo.stop()
 
 
-trainer(GliderInterface)
+# trainer(GliderInterface)
