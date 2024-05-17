@@ -9,7 +9,8 @@ from msfs_rt_env import DefaultEnv
 from premade_env import GliderInterface
 
 import logging
-#Suppress erroneous warnings from the pysimconnect library
+
+# Suppress erroneous warnings from the pysimconnect library
 logging.getLogger("root").setLevel(40)
 
 
@@ -26,11 +27,9 @@ def trainer(interface: DefaultEnv):
     MSFS_config["benchmark_polyak"] = 0.2
     MSFS_config["disable_env_checking"] = True
 
-
     path = pathlib.Path(__file__).parent.resolve()
     path_to_checkpoint = f"{path}\checkpoints"
     env_name = "real-time-gym-ts-v1"
-
 
     try:
         file = open("checkpoint_dir.txt", "r")
@@ -40,10 +39,13 @@ def trainer(interface: DefaultEnv):
         print("Algorithm restored from checpoint")
     except:
         print("Training new policy")
-        env = gym.make(env_name, config = MSFS_config)
-        algo_config = SACConfig().resources(num_gpus=1).environment(env= env_name, disable_env_checking=True)
+        env = gym.make(env_name, config=MSFS_config)
+        algo_config = (
+            SACConfig()
+            .resources(num_gpus=1)
+            .environment(env=env_name, disable_env_checking=True)
+        )
         algo = algo_config.build()
-
 
     terminated = truncated = False
 
@@ -61,5 +63,6 @@ def trainer(interface: DefaultEnv):
             file.close
 
     algo.stop()
+
 
 trainer(GliderInterface)
