@@ -25,10 +25,10 @@ Yann Bouteiller - rtgym
 Patrick Surry - pysimconnect  
 Dr Nonso Nnamoko (Edge Hill University) - Project Supervisor  
 
-###Citing this Framework
+### Citing this Framework  
 If anyone ever needs to cite this in a pubication please use:
 
-'''bibtex
+```bibtex
 @masterthesis{MSFS-soar,
   type = {Bachelor's Dissertation}
   author = {Sean Johnson}
@@ -36,5 +36,5 @@ If anyone ever needs to cite this in a pubication please use:
   school = {Edge Hill University}
   year = {2024}
 }
-'''
+```
 A copy can be provided on request
