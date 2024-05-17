@@ -20,7 +20,7 @@ pip install -r requirements.txt
 
 
 ## Tutorial
-Custom environemnts must inherit from [DefaultEnv](https://github.com/SomeGuyEatingPie/MSFS_Gym_Enviroment/blob/master/default_env.py) and follow the same class interface, exatly as shown below.
+Custom environemnts must inherit from [DefaultEnv](https://github.com/SomeGuyEatingPie/MSFS_Gym_Enviroment/blob/master/default_env.py) and follow the same class interface, exactly as shown below.
 ```python
 class CustomEnv():
 
