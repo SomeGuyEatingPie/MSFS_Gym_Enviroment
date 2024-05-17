@@ -50,7 +50,7 @@ rtgym requires that the observation space be returned as a Spaces.Tuple.
 
 Then copy an interface class for your custom environment, which inherits from [RealTimeFlightSimInterface](https://github.com/SomeGuyEatingPie/MSFS_Gym_Enviroment/blob/master/msfs_rt_env.py). 
 ```python
-class CusatomInterface(RealTimeFlightSimInterface):
+class CustomInterface(RealTimeFlightSimInterface):
 
     def __init__(self):
         super().__init__(CustomEnv())
