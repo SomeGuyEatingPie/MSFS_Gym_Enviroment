@@ -1,0 +1,5 @@
+gymnasium==0.28.1
+numpy==1.26.4
+pysimconnect==0.2.6
+ray==2.4.0
+rtgym==0.13
