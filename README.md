@@ -1,7 +1,7 @@
 # MSFS Gym Environment  
 Create custom [real-time](https://github.com/yannbouteiller/rtgym/tree/main) - [Gymnasium](https://gymnasium.farama.org) environments for Microsoft Flight Simulator 2020.   
 
-MSFS Gym Environemnt is a simple framework for building RL environemnts using the efficient real-time threaded framework: [Real-Time Gym](https://github.com/yannbouteiller/rtgym) ```rtgym```.
+MSFS Gym Environemnt is a simple framework for building RL environemnts for MSFS 2020, using the efficient real-time threaded framework: [Real-Time Gym](https://github.com/yannbouteiller/rtgym) ```rtgym```.
 It is coded in python.
 
 ## Requirements 
